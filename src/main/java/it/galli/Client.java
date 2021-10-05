@@ -32,24 +32,32 @@ return miosocket;
 }
 
 public void comunica(){
-    try{
-        System.out.println("4... inserisci la stringa da trasmettere al server:"+'\n');
-        stringaUtente =tastiera.readLine();
-        System.out.println("5... invio la stringa al server e attendo...");
-        outVersoServer.writeBytes(stringaUtente+'\n');
-        stringRicevutaDalServer=inDalServer.readLine();
-        System.out.println("8... risposta dal server "+'\n'+stringRicevutaDalServer);
-        //chiudo la connessione
-        System.out.println("9 CLIENT: termina elaborazione e chiude connessione");
-        miosocket.close();
-    }
-    catch(Exception e){
-        System.out.println(e.getMessage());
-        System.out.println("Errore durante la comunicazione col server!");
-        System.exit(1);
+    for(;;){
+        try{
+            System.out.println("4... utente, inserisci la stringa da trasmettere al server:");
+            stringaUtente=tastiera.readLine();
+            //la spedisco al server
+            System.out.println("5... invio la stringa al server e attendo...");
+            outVersoServer.writeBytes(stringaUtente+'\n');
+            //leggo la risposta del server
+            stringRicevutaDalServer=inDalServer.readLine();
+            System.out.println("7... risposta dal server "+'\n'+stringRicevutaDalServer);
+            if(stringaUtente.equals("FINE")){
+                System.out.println("8 CLIENT: termina elaborazione e chiude connessione");
+                miosocket.close();      //chiudo applicazione
+                break;
+            }
+        }
+            catch(Exception e){
+                System.out.println(e.getMessage());
+                System.out.println("Errore durante la comunicazione con il server!");
+                System.exit(1);
+
+            }
+        }
+
     }
 
-}
 public static void main( String[] args )
 {
     Client cliente=new Client();
