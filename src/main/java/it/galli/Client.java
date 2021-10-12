@@ -42,7 +42,7 @@ public void comunica(){
             //leggo la risposta del server
             stringRicevutaDalServer=inDalServer.readLine();
             System.out.println("7... risposta dal server "+'\n'+stringRicevutaDalServer);
-            if(stringaUtente.equals("FINE")){
+            if(stringaUtente.equals("FINE") || stringaUtente.equals("STOP")){
                 System.out.println("8 CLIENT: termina elaborazione e chiude connessione");
                 miosocket.close();      //chiudo applicazione
                 break;

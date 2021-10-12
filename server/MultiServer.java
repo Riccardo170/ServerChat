@@ -8,7 +8,7 @@ public class MultiServer {
                 System.out.println("1 Server in attesa...");
                 Socket socket = serverSocket.accept();
                 System.out.println("3 Server socket"+socket);
-                ServerThread serverThread= new ServerThread(socket);
+                ServerThread serverThread= new ServerThread(socket, serverSocket);
                 serverThread.start();
             }
         }
