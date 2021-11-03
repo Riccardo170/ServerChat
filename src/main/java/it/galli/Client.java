@@ -1,6 +1,6 @@
-
 import java.io.*;
 import java.net.*;
+import java.util.Vector;
 
 public class Client {
     String nomeServer ="localhost";
@@ -11,6 +11,8 @@ public class Client {
     String stringRicevutaDalServer;
     DataOutputStream outVersoServer;
     BufferedReader inDalServer;
+    int i=0;
+    Vector<String> nomeUtente = new Vector<String>();
 
 
 public Socket connetti(){
@@ -34,7 +36,13 @@ return miosocket;
 public void comunica(){
     for(;;){
         try{
-            System.out.println("4... utente, inserisci la stringa da trasmettere al server:");
+            
+            System.out.print("Inserisci nome utente: ");
+            nomeUtente.add(tastiera.readLine());
+            stringaUtente=tastiera.readLine();
+            outVersoServer.writeBytes(stringaUtente+'\n');
+            //System.out.println(nomeUtente);
+            System.out.println("utente, inserisci la stringa da trasmettere al server:");
             stringaUtente=tastiera.readLine();
             //la spedisco al server
             System.out.println("5... invio la stringa al server e attendo...");
@@ -66,3 +74,6 @@ public static void main( String[] args )
 }
 
 }
+
+
+
