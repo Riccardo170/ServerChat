@@ -6,9 +6,12 @@ public class ServerThread extends Thread {
     ServerSocket server = null;
     Socket client = null;
     String stringaRicevuta = null;
+    String nomeRicevuto=null;
     String stringaModificata = null;
     BufferedReader inDalClient;
     DataOutputStream outVersoClient;
+    Vector<String> nomeUtente = new Vector<String>();
+    //nomeUtente.add(tastiera.readLine());
 
     public ServerThread(Socket socket, ServerSocket server) {
         this.client = socket;
@@ -23,16 +26,6 @@ public class ServerThread extends Thread {
         }
     }
 
-    /*
-     * public Socket attendi(){ try{
-     * System.out.println("1 SERVER partito in esecuzione..."); server =new
-     * ServerSocket(6789); client = server.accept(); server.close(); inDalClient =
-     * new BufferedReader(new InputStreamReader(client.getInputStream()));
-     * outVersoClient= new DataOutputStream(client.getOutputStream()); }
-     * catch(Exception e){ System.out.println(e.getMessage());
-     * System.out.println("Errore durante l'istanza del server!"); } return client;
-     * }
-     */
     public void comunica() throws Exception {
         inDalClient = new BufferedReader(new InputStreamReader(client.getInputStream()));
         outVersoClient = new DataOutputStream(client.getOutputStream());
@@ -43,6 +36,9 @@ public class ServerThread extends Thread {
                 System.out.println("Echo sul server in chiusura :" + stringaRicevuta);
                 break;
             } else {
+                nomeUtente.add(stringaRicevuta);
+                System.out.println("l'utente inserito è: "+ nomeUtente);
+                outVersoClient.writeBytes("l'elenco dei client connessi è : "+nomeUtente);
                 outVersoClient.writeBytes(stringaRicevuta + "(ricevuta e ritrasmessa)" + '\n');
                 System.out.println("6 Echo sul server:" + stringaRicevuta);
             }

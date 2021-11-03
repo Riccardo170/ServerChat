@@ -1,6 +1,5 @@
 import java.io.*;
 import java.net.*;
-import java.util.Vector;
 
 public class Client {
     String nomeServer ="localhost";
@@ -12,7 +11,7 @@ public class Client {
     DataOutputStream outVersoServer;
     BufferedReader inDalServer;
     int i=0;
-    Vector<String> nomeUtente = new Vector<String>();
+    
 
 
 public Socket connetti(){
@@ -33,12 +32,12 @@ public Socket connetti(){
 return miosocket;
 }
 
+
 public void comunica(){
     for(;;){
         try{
             
             System.out.print("Inserisci nome utente: ");
-            nomeUtente.add(tastiera.readLine());
             stringaUtente=tastiera.readLine();
             outVersoServer.writeBytes(stringaUtente+'\n');
             //System.out.println(nomeUtente);
