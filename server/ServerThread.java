@@ -36,16 +36,18 @@ public class ServerThread extends Thread {
                 System.out.println("Echo sul server in chiusura :" + stringaRicevuta);
                 break;
             } else {
+                if(stringaRicevuta.contains("A:")){
                 nomeUtente.add(stringaRicevuta);
+                }
                 System.out.println("l'utente inserito è: "+ nomeUtente);
                 outVersoClient.writeBytes("l'elenco dei client connessi è : "+nomeUtente);
                 outVersoClient.writeBytes(stringaRicevuta + "(ricevuta e ritrasmessa)" + '\n');
-                System.out.println("6 Echo sul server:" + stringaRicevuta);
+                System.out.println("Echo sul server:" + stringaRicevuta);
             }
         }
         outVersoClient.close();
         inDalClient.close();
-        System.out.println("9 Chiusura socket" + client);
+        System.out.println("Chiusura socket" + client);
         client.close();
         if (stringaRicevuta.equals("STOP")) {
             server.close();

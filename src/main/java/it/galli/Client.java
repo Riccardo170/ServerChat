@@ -10,12 +10,9 @@ public class Client {
     String stringRicevutaDalServer;
     DataOutputStream outVersoServer;
     BufferedReader inDalServer;
-    int i=0;
-    
-
 
 public Socket connetti(){
-    System.out.println("2 CLIENT partito in esecuzione...");
+    System.out.println("CLIENT partito in esecuzione...");
     try{
         tastiera= new BufferedReader(new InputStreamReader(System.in));
         miosocket=new Socket(nomeServer,portaServer);
@@ -32,25 +29,26 @@ public Socket connetti(){
 return miosocket;
 }
 
-
 public void comunica(){
     for(;;){
         try{
             
             System.out.print("Inserisci nome utente: ");
             stringaUtente=tastiera.readLine();
-            outVersoServer.writeBytes(stringaUtente+'\n');
+            outVersoServer.writeBytes("A:"+ stringaUtente+'\n');
             //System.out.println(nomeUtente);
-            System.out.println("utente, inserisci la stringa da trasmettere al server:");
+            //'P:' manda il messaggio ad un unico client
+            //'ALL:' manda il messaggio a tutti
+            System.out.println( stringaUtente + " inserisci la stringa da trasmettere al server:");
             stringaUtente=tastiera.readLine();
             //la spedisco al server
-            System.out.println("5... invio la stringa al server e attendo...");
+            System.out.println("... invio la stringa al server e attendo...");
             outVersoServer.writeBytes(stringaUtente+'\n');
             //leggo la risposta del server
             stringRicevutaDalServer=inDalServer.readLine();
-            System.out.println("7... risposta dal server "+'\n'+stringRicevutaDalServer);
+            System.out.println("... risposta dal server "+'\n'+stringRicevutaDalServer);
             if(stringaUtente.equals("FINE") || stringaUtente.equals("STOP")){
-                System.out.println("8 CLIENT: termina elaborazione e chiude connessione");
+                System.out.println("CLIENT: termina elaborazione e chiude connessione");
                 miosocket.close();      //chiudo applicazione
                 break;
             }
@@ -70,6 +68,7 @@ public static void main( String[] args )
     Client cliente=new Client();
     cliente.connetti();
     cliente.comunica();
+
 }
 
 }
