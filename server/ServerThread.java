@@ -10,10 +10,13 @@ public class ServerThread extends Thread {
     String stringaModificata = null;
     BufferedReader inDalClient;
     DataOutputStream outVersoClient;
-    Vector<String> nomeUtente = new Vector<String>();
+    //Vector<String> nomeUtente = new Vector<String>();
+    contenitore c= new contenitore();
     //nomeUtente.add(tastiera.readLine());
+    String nome;
 
-    public ServerThread(Socket socket, ServerSocket server) {
+    public ServerThread(Socket socket, ServerSocket server,contenitore c) {
+        this.c = c;
         this.client = socket;
         this.server = server;
     }
@@ -29,13 +32,21 @@ public class ServerThread extends Thread {
     public void comunica() throws Exception {
         inDalClient = new BufferedReader(new InputStreamReader(client.getInputStream()));
         outVersoClient = new DataOutputStream(client.getOutputStream());
+        nome = inDalClient.readLine();
+        if(nome.contains("A:")){
+            c.aggiungi(nome, this);
+            invia("scelta username completata");
+        }
         for (;;) {
             stringaRicevuta = inDalClient.readLine();
+            c.messaggio(nome," : "+ stringaRicevuta);
+
+
             if (stringaRicevuta == null || stringaRicevuta.equals("FINE") || stringaRicevuta.equals("STOP")) {
                 outVersoClient.writeBytes(stringaRicevuta + "(=>server in chiusura...)" + '\n');
                 System.out.println("Echo sul server in chiusura :" + stringaRicevuta);
                 break;
-            } else {
+            } /*else {
                 if(stringaRicevuta.contains("A:")){
                 nomeUtente.add(stringaRicevuta);
                 }
@@ -43,7 +54,7 @@ public class ServerThread extends Thread {
                 outVersoClient.writeBytes("l'elenco dei client connessi è : "+nomeUtente);
                 outVersoClient.writeBytes(stringaRicevuta + "(ricevuta e ritrasmessa)" + '\n');
                 System.out.println("Echo sul server:" + stringaRicevuta);
-            }
+            }*/
         }
         outVersoClient.close();
         inDalClient.close();
@@ -51,6 +62,14 @@ public class ServerThread extends Thread {
         client.close();
         if (stringaRicevuta.equals("STOP")) {
             server.close();
+        }
+    }
+
+    public void invia(String messaggio){
+        try {
+            outVersoClient.writeBytes(messaggio + '\n');
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
